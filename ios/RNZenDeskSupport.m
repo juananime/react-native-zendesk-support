@@ -13,6 +13,7 @@
 
 #import "RNZenDeskSupport.h"
 #import <ZendeskSDK/ZendeskSDK.h>
+
 @implementation RNZenDeskSupport
 
 RCT_EXPORT_MODULE();
@@ -43,10 +44,38 @@ RCT_EXPORT_METHOD(setupIdentity:(NSDictionary *)identity){
     });
 }
 
+RCT_EXPORT_METHOD(showHelpCenterWithStyle:(NSDictionary *)style) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIWindow *window=[UIApplication sharedApplication].keyWindow;
+        UIViewController *vc = [window rootViewController];
+        [ZDKTheme currentAppliedTheme].primaryBackgroundColor = [self getUIColorObjectFromHexString:style[@"primaryBackgroundColor"] alpha:1.0];
+        [ZDKTheme currentAppliedTheme].secondaryBackgroundColor = [self getUIColorObjectFromHexString:style[@"secondaryBackgroundColor"] alpha:1.0];
+        [ZDKTheme currentAppliedTheme].emptyBackgroundColor = [self getUIColorObjectFromHexString:style[@"emptyBackgroundColor"] alpha:1.0];
+        
+        [ZDKTheme currentAppliedTheme].separatorColor = [self getUIColorObjectFromHexString:style[@"separatorColor"] alpha:1.0];
+        [ZDKTheme currentAppliedTheme].inputFieldTextColor = [self getUIColorObjectFromHexString:style[@"inputFieldTextColor"] alpha:1.0];
+        [ZDKTheme currentAppliedTheme].primaryTextColor = [self getUIColorObjectFromHexString:style[@"primaryTextColor"] alpha:1.0];
+        [ZDKTheme currentAppliedTheme].secondaryTextColor =  [self getUIColorObjectFromHexString:style[@"secondaryTextColor"] alpha:1.0];
+       
+        [ZDKTheme currentAppliedTheme].fontName = style[@"fontFamily"];
+        [ZDKTheme currentAppliedTheme].boldFontName = style[@"boldFontName"];
+     
+
+        ZDKHelpCenterOverviewContentModel *helpCenterContentModel = [ZDKHelpCenterOverviewContentModel defaultContent];
+        helpCenterContentModel.hideContactSupport = NO;
+        [ZDKHelpCenter setNavBarConversationsUIType:ZDKNavBarConversationsUITypeNone];
+        
+        vc.modalPresentationStyle = UIModalPresentationFormSheet;
+        [ZDKHelpCenter presentHelpCenterOverview:vc withContentModel:helpCenterContentModel];
+    });
+}
+
 RCT_EXPORT_METHOD(showHelpCenterWithOptions:(NSDictionary *)options) {
     dispatch_async(dispatch_get_main_queue(), ^{
         UIWindow *window=[UIApplication sharedApplication].keyWindow;
         UIViewController *vc = [window rootViewController];
+       [ZDKTheme currentAppliedTheme].primaryBackgroundColor = [UIColor blackColor];
+        [ZDKTheme currentAppliedTheme].fontName = @"GoogleSans-Medium";
         ZDKHelpCenterOverviewContentModel *helpCenterContentModel = [ZDKHelpCenterOverviewContentModel defaultContent];
         helpCenterContentModel.hideContactSupport = [RCTConvert BOOL:options[@"hideContactSupport"]];
         if (helpCenterContentModel.hideContactSupport) {
@@ -140,5 +169,35 @@ RCT_EXPORT_METHOD(supportHistory){
         UIViewController *vc = [window rootViewController];
         [ZDKRequests presentRequestListWithViewController:vc];
     });
+}
+
+- (UIColor *)getUIColorObjectFromHexString:(NSString *)hexStr alpha:(CGFloat)alpha
+{
+  // Convert hex string to an integer
+  unsigned int hexint = [self intFromHexString:hexStr];
+
+  // Create a color object, specifying alpha as well
+  UIColor *color =
+    [UIColor colorWithRed:((CGFloat) ((hexint & 0xFF0000) >> 16))/255
+    green:((CGFloat) ((hexint & 0xFF00) >> 8))/255
+    blue:((CGFloat) (hexint & 0xFF))/255
+    alpha:alpha];
+
+  return color;
+}
+- (unsigned int)intFromHexString:(NSString *)hexStr
+{
+  unsigned int hexInt = 0;
+
+  // Create scanner
+  NSScanner *scanner = [NSScanner scannerWithString:hexStr];
+
+  // Tell scanner to skip the # character
+  [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@"#"]];
+
+  // Scan hex value
+  [scanner scanHexInt:&hexInt];
+
+  return hexInt;
 }
 @end
