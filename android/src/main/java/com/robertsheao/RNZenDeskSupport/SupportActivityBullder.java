@@ -52,6 +52,8 @@ class SupportActivityBuilder {
       if (options.hasKey("articleVotingEnabled")) {
         this.withArticleVoting(options.getBoolean("articleVotingEnabled"));
       }
+      withContactUsButtonVisibility(ContactUsButtonVisibility.OFF);
+
       if (options.hasKey("withContactUsButtonVisibility")) {
         switch(options.getString("withContactUsButtonVisibility")) {
           case "OFF":

@@ -7,6 +7,7 @@ package com.robertsheao.RNZenDeskSupport;
 
 import android.content.Intent;
 import android.app.Activity;
+import android.view.View;
 
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -70,9 +71,20 @@ public class RNZenDeskSupportModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void showHelpCenterWithOptions(ReadableMap options) {
+
+
+
+
     SupportActivityBuilder.create()
       .withOptions(options)
       .show(getReactApplicationContext());
+  }
+
+  @ReactMethod
+  public void showHelpCenterWithStyle(ReadableMap options) {
+    SupportActivityBuilder.create()
+            .withOptions(options)
+            .show(getReactApplicationContext());
   }
 
   @ReactMethod
