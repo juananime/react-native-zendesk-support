@@ -44,21 +44,34 @@ RCT_EXPORT_METHOD(setupIdentity:(NSDictionary *)identity){
     });
 }
 
-RCT_EXPORT_METHOD(showHelpCenterWithStyle:(NSDictionary *)style) {
+RCT_EXPORT_METHOD(showHelpCenterWithStyle) {
+    NSDictionary * SOPstyle = @{
+        @"fontFamily":@"#GoogleSans-Medium",
+        @"boldFontName":@"#GoogleSans-Bold_O",
+        @"primaryBackgroundColor":@"#FFFFFF",
+        @"separatorColor":@"#a8afaf",
+        @"inputFieldTextColor":@"#FFFFFF",
+        @"secondaryBackgroundColor":@"#FFFFFF",
+        @"emptyBackgroundColor":@"#BBBFFF",
+        @"primaryTextColor":@"#1d5697",
+        @"secondaryTextColor":@"#a8afaf"
+        
+    };
     dispatch_async(dispatch_get_main_queue(), ^{
         UIWindow *window=[UIApplication sharedApplication].keyWindow;
         UIViewController *vc = [window rootViewController];
-        [ZDKTheme currentAppliedTheme].primaryBackgroundColor = [self getUIColorObjectFromHexString:style[@"primaryBackgroundColor"] alpha:1.0];
-        [ZDKTheme currentAppliedTheme].secondaryBackgroundColor = [self getUIColorObjectFromHexString:style[@"secondaryBackgroundColor"] alpha:1.0];
-        [ZDKTheme currentAppliedTheme].emptyBackgroundColor = [self getUIColorObjectFromHexString:style[@"emptyBackgroundColor"] alpha:1.0];
+        [ZDKTheme currentAppliedTheme].primaryBackgroundColor = [self getUIColorObjectFromHexString:SOPstyle[@"primaryBackgroundColor"] alpha:1.0];
+        [ZDKTheme currentAppliedTheme].secondaryBackgroundColor = [self getUIColorObjectFromHexString:SOPstyle[@"secondaryBackgroundColor"] alpha:1.0];
+        [ZDKTheme currentAppliedTheme].emptyBackgroundColor = [self getUIColorObjectFromHexString:SOPstyle[@"emptyBackgroundColor"] alpha:1.0];
+        [ZDKTheme currentAppliedTheme].metaTextColor = [UIColor redColor];
         
-        [ZDKTheme currentAppliedTheme].separatorColor = [self getUIColorObjectFromHexString:style[@"separatorColor"] alpha:1.0];
-        [ZDKTheme currentAppliedTheme].inputFieldTextColor = [self getUIColorObjectFromHexString:style[@"inputFieldTextColor"] alpha:1.0];
-        [ZDKTheme currentAppliedTheme].primaryTextColor = [self getUIColorObjectFromHexString:style[@"primaryTextColor"] alpha:1.0];
-        [ZDKTheme currentAppliedTheme].secondaryTextColor =  [self getUIColorObjectFromHexString:style[@"secondaryTextColor"] alpha:1.0];
+        [ZDKTheme currentAppliedTheme].separatorColor = [self getUIColorObjectFromHexString:SOPstyle[@"separatorColor"] alpha:1.0];
+        [ZDKTheme currentAppliedTheme].inputFieldTextColor = [self getUIColorObjectFromHexString:SOPstyle[@"inputFieldTextColor"] alpha:1.0];
+        [ZDKTheme currentAppliedTheme].primaryTextColor = [self getUIColorObjectFromHexString:SOPstyle[@"primaryTextColor"] alpha:1.0];
+        [ZDKTheme currentAppliedTheme].secondaryTextColor =  [self getUIColorObjectFromHexString:SOPstyle[@"secondaryTextColor"] alpha:1.0];
        
-        [ZDKTheme currentAppliedTheme].fontName = style[@"fontFamily"];
-        [ZDKTheme currentAppliedTheme].boldFontName = style[@"boldFontName"];
+        [ZDKTheme currentAppliedTheme].fontName = SOPstyle[@"fontFamily"];
+        [ZDKTheme currentAppliedTheme].boldFontName = SOPstyle[@"boldFontName"];
      
 
         ZDKHelpCenterOverviewContentModel *helpCenterContentModel = [ZDKHelpCenterOverviewContentModel defaultContent];

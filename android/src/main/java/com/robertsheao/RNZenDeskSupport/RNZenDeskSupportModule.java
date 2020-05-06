@@ -81,9 +81,8 @@ public class RNZenDeskSupportModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void showHelpCenterWithStyle(ReadableMap options) {
+  public void showHelpCenterWithStyle() {
     SupportActivityBuilder.create()
-            .withOptions(options)
             .show(getReactApplicationContext());
   }
 
