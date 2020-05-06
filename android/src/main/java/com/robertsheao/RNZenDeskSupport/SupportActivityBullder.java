@@ -27,6 +27,7 @@ class SupportActivityBuilder {
   private final Bundle args = new Bundle();
 
   private SupportActivityBuilder() {
+    withContactUsButtonVisibility(ContactUsButtonVisibility.OFF);
   }
 
   private static long[] toLongArray(ArrayList<?> values) {
@@ -38,9 +39,10 @@ class SupportActivityBuilder {
 
   static SupportActivityBuilder create() {
     SupportActivityBuilder builder = new SupportActivityBuilder();
-    builder.showConversationsMenuButton(true);
-    builder.withArticleVoting(true);
-    builder.withContactUsButtonVisibility(ContactUsButtonVisibility.ARTICLE_LIST_AND_ARTICLE);
+    builder.showConversationsMenuButton(false);
+    builder.withArticleVoting(false);
+    builder.withContactUsButtonVisibility(ContactUsButtonVisibility.OFF);
+
     return builder;
   }
 
@@ -52,7 +54,7 @@ class SupportActivityBuilder {
       if (options.hasKey("articleVotingEnabled")) {
         this.withArticleVoting(options.getBoolean("articleVotingEnabled"));
       }
-      withContactUsButtonVisibility(ContactUsButtonVisibility.OFF);
+
 
       if (options.hasKey("withContactUsButtonVisibility")) {
         switch(options.getString("withContactUsButtonVisibility")) {
